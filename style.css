@@ -1,10 +1,10 @@
 *,
 ::after,
-::before{
+::before {
     box-sizing: border-box;
 }
 
-body{
+body {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -14,18 +14,19 @@ body{
     width: 100vw;
 }
 
-.board-container{
+.board-container {
     border: 1px solid white;
 
 }
-.game-board{
+
+.game-board {
     display: flex;
     flex-wrap: wrap;
     width: 600px;
     height: 600px;
 }
 
-.squares{
+.squares {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -34,3 +35,7 @@ body{
     height: 200px;
     font-size: 60px;
 }
+
+
+
+
