@@ -1,3 +1,9 @@
+let test = document.querySelector('.test-input');
+test.addEventListener('keyup', ()=>{
+    console.log(test.textContent);
+})
+console.log(test.textContent);
+
 const gameBoard = (() => {
     let multiArray = [
         ['', '', ''],
@@ -7,7 +13,23 @@ const gameBoard = (() => {
 
     const cells = document.getElementsByClassName('squares');
     const cellsArray = Array.from(cells);
+    let gameSetupForm = document.querySelector('.player-form');
 
+
+    function hideForm() {
+        const playButton = document.querySelector('.play-button');
+        playButton.addEventListener('click', () => {
+            console.log(playerFactory.p1Name);
+            gameSetupForm.style.display = 'none';
+        })
+    }
+
+    function showForm() {
+        const gameSettingsButton = document.querySelector('.game-settings-button');
+        gameSettingsButton.addEventListener('click', () => {
+            gameSetupForm.style.display = 'flex';
+        })
+    }
 
 
     const createParagraph = () => {
@@ -53,19 +75,43 @@ const gameBoard = (() => {
     }
 
 
-    return { multiArray, cellsArray, refreshArray, clearBoard };
+    return { multiArray, cellsArray, refreshArray, clearBoard, hideForm, showForm };
 
 
 
 })();
 
-const playerFactory = (name, symbol) => {
-    return { name, symbol };
+const playerFactory = () => {
+    const p1Name = document.querySelector('#p1-name').innerText;
+    const getP1Form = document.querySelector('.rating-form1');
+    const p2Name = document.querySelector('#p2-name').textContent;
+    const getP2Form = document.querySelector('.rating-form2');
+
+    const p1Symbol = Array.from(getP1Form).forEach(element => {
+        if (element.checked) {
+            console.log(element);
+        }
+    })
+    const p2Symbol = Array.from(getP2Form).forEach(element => {
+        if (element.checked) {
+        }
+    })
+
+    console.log(getP1Form);
+
+
+
+
+
+    return { p1Name, p1Symbol, p2Name, p2Symbol };
 }
 
 const displayController = (() => {
-    const p1 = playerFactory('jeff', 'X');
-    const p2 = playerFactory('tom', 'O');
+    gameBoard.showForm();
+    gameBoard.hideForm();
+    playerFactory();
+
+
     let numberOfTurns;
     const clearButton = document.querySelector('.clear-button').addEventListener('click', () => {
         gameBoard.clearBoard(document.getElementsByClassName('squares'), numberOfTurns);
@@ -179,12 +225,12 @@ const displayController = (() => {
 
         if (isThereAWinner) {
             isThereAWinner = false;
-           gameBoard.clearBoard();
-           console.log(numberOfTurns)
-           alert(`${currentPlayer.name.toUpperCase()} won the game`)
-        } else if (!isThereAWinner && numberOfTurns.textContent === '9') {
+            alert(`${currentPlayer.name.toUpperCase()} won the game`)
             gameBoard.clearBoard();
+            console.log(numberOfTurns)
+        } else if (!isThereAWinner && numberOfTurns.textContent === '9') {
             alert(`THIS WAS A TIE`)
+            gameBoard.clearBoard();
         }
 
     })))
