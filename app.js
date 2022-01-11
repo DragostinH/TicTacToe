@@ -1,8 +1,5 @@
-let test = document.querySelector('.test-input');
-test.addEventListener('keyup', ()=>{
-    console.log(test.textContent);
-})
-console.log(test.textContent);
+let test = document.querySelector('#p1-name');
+console.log(test)
 
 const gameBoard = (() => {
     let multiArray = [
@@ -19,7 +16,6 @@ const gameBoard = (() => {
     function hideForm() {
         const playButton = document.querySelector('.play-button');
         playButton.addEventListener('click', () => {
-            console.log(playerFactory.p1Name);
             gameSetupForm.style.display = 'none';
         })
     }
@@ -81,35 +77,32 @@ const gameBoard = (() => {
 
 })();
 
-const playerFactory = () => {
-    const p1Name = document.querySelector('#p1-name').innerText;
-    const getP1Form = document.querySelector('.rating-form1');
-    const p2Name = document.querySelector('#p2-name').textContent;
-    const getP2Form = document.querySelector('.rating-form2');
-
-    const p1Symbol = Array.from(getP1Form).forEach(element => {
-        if (element.checked) {
+const playerFactory = (name, symbol) => {
+    name = name.value
+    let arr = Array.from(symbol);
+    arr.forEach(element =>{
+        if(element.checked){
             console.log(element);
-        }
-    })
-    const p2Symbol = Array.from(getP2Form).forEach(element => {
-        if (element.checked) {
+            symbol = element.nextElementSibling;
         }
     })
 
-    console.log(getP1Form);
-
-
-
-
-
-    return { p1Name, p1Symbol, p2Name, p2Symbol };
+    return { name, symbol };
 }
 
 const displayController = (() => {
-    gameBoard.showForm();
     gameBoard.hideForm();
-    playerFactory();
+    gameBoard.showForm();
+    const getP1Name = document.querySelector('#p1-name');
+    const getP1Symbol = document.querySelector('.rating-form1')
+    const getP2Name = document.querySelector('#p2-name');
+    const getP2Symbol = document.querySelector('.rating-form2')
+    const p1 = playerFactory(getP1Name, getP1Symbol);
+    const p2 = playerFactory(getP2Name, getP2Symbol);
+    console.log(p1.name);
+    console.log(p2.name);
+    console.log(p1.symbol)
+    console.log(p2.symbol)
 
 
     let numberOfTurns;
@@ -201,7 +194,7 @@ const displayController = (() => {
             e.lastChild.textContent !== getPlayerSymbol(p2)) {
 
             currentPlayer = p1;
-            e.lastChild.textContent = getPlayerSymbol(p1);
+            e.lastChild.appendChild(getPlayerSymbol(p1));
             twoDimArray = gameBoard.refreshArray(twoDimArray, domArray);
             numberOfTurns.textContent++;
             if (numberOfTurns.textContent > 3) {

@@ -58,8 +58,8 @@ font-size: 5em;
 
 
 .player-form {
-    /* display: flex; */
-    display: none;
+    display: flex;
+    /* display: none; */
     position: absolute;
     flex-direction: column;
     align-items: center;
