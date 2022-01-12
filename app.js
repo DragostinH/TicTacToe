@@ -1,5 +1,5 @@
-let test = document.querySelector('#p1-name');
-console.log(test)
+
+
 
 const gameBoard = (() => {
     let multiArray = [
@@ -8,14 +8,17 @@ const gameBoard = (() => {
         ['', '', '']
     ]
 
+
     const cells = document.getElementsByClassName('squares');
     const cellsArray = Array.from(cells);
     let gameSetupForm = document.querySelector('.player-form');
 
 
+
     function hideForm() {
         const playButton = document.querySelector('.play-button');
         playButton.addEventListener('click', () => {
+            clearBoard();
             gameSetupForm.style.display = 'none';
         })
     }
@@ -28,19 +31,14 @@ const gameBoard = (() => {
     }
 
 
-    // const createParagraph = () => {
-    //     return document.createElement('p');
-    // }
-
-    // for (let i = 0; i < cellsArray.length; i++) {
-    //     cellsArray[i].appendChild(createParagraph());
-    // }
-
     function clearBoard(nodeArray = document.getElementsByClassName('squares'), turns = document.querySelector('.turns-sp')) {
         turns.textContent = 0;
 
         for (let j = 0; j < nodeArray.length; j++) {
-            nodeArray[j].removeChild(nodeArray[j].lastChild);
+            while (nodeArray[j].hasChildNodes()) {
+
+                nodeArray[j].removeChild(nodeArray[j].lastChild);
+            }
         }
 
 
@@ -77,33 +75,48 @@ const gameBoard = (() => {
 
 })();
 
-const playerFactory = (name, symbol) => {
+const playerFactory = (name, nodeList) => {
     name = name.value
-    let arr = Array.from(symbol);
-    arr.forEach(element => {
+    let symbol;
+    // let arr = Array.from(nodeList);
+    for (let i = 0; i < nodeList.length; i++) {
+
+        const element = nodeList[i];
+
         if (element.checked) {
-            console.log(element);
-            symbol = element.nextElementSibling;
+            console.log(element.checked);
+            symbol = element;
         }
-    })
+    }
 
     return { name, symbol };
 }
 
 const displayController = (() => {
-    gameBoard.hideForm();
-    gameBoard.showForm();
-    let clonedSymbol;
+    let playerOne;
+    let playerTwo;
     const getP1Name = document.querySelector('#p1-name');
     const getP1Symbol = document.querySelector('.rating-form1')
     const getP2Name = document.querySelector('#p2-name');
     const getP2Symbol = document.querySelector('.rating-form2')
-    const p1 = playerFactory(getP1Name, getP1Symbol);
-    const p2 = playerFactory(getP2Name, getP2Symbol);
-    console.log(p1.name);
-    console.log(p2.name);
-    console.log(p1.symbol)
-    console.log(p2.symbol)
+    let arrOne = Array.from(getP1Symbol)
+    arrOne.forEach(e => e.addEventListener('change', () => {
+        console.log(arrOne)
+    }))
+    let arrTwo = Array.from(getP2Symbol)
+    arrTwo.forEach(e => e.addEventListener('change', () => {
+        console.log(arrTwo)
+
+    }))
+
+     playerOne = playerFactory(getP1Name, arrOne);
+     playerTwo = playerFactory(getP2Name, arrTwo);
+
+    gameBoard.hideForm();
+    gameBoard.showForm();
+    let clonedSymbol;
+    console.log(playerOne);
+    console.log(playerTwo);
 
 
     let numberOfTurns;
@@ -119,49 +132,44 @@ const displayController = (() => {
     let currentPlayer;
 
     function getPlayerSymbol(player) {
-        return player.symbol;
+        return player.symbol.nextElementSibling;
     }
 
 
     winCondition = (player, arr, turns) => {
         console.log(arr);
         console.log(player.symbol.innerHTML);
-        console.log(arr[0][0].lastChild.innerHTML);
-        console.log(arr[1][0].lastChild.innerHTML);
-        console.log(arr[2][0].lastChild.innerHTML);
 
 
         if (
+            arr[0][2].lastChild !== null &&
+            arr[0][0].lastChild !== null &&
+            arr[0][1].lastChild !== null &&
             arr[0][0].lastChild.innerHTML === player.symbol.innerHTML &&
             arr[0][1].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[0][2].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[0][2].lastChild.lastChild !== null &&
-            arr[0][0].lastChild.lastChild !== null &&
-            arr[0][1].lastChild.lastChild !== null
+            arr[0][2].lastChild.innerHTML === player.symbol.innerHTML
         ) {
             console.log(`The winner is ${player.name}. They got 3 TOP across on the ${turns} turn`);
             return true;
         }
         if (
+            arr[1][0].lastChild !== null &&
+            arr[1][2].lastChild !== null &&
+            arr[1][1].lastChild !== null &&
             arr[1][0].lastChild.innerHTML === player.symbol.innerHTML &&
             arr[1][1].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[1][2].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[1][2].lastChild.lastChild !== null &&
-            arr[1][0].lastChild.lastChild !== null &&
-            arr[1][1].lastChild.lastChild !== null
+            arr[1][2].lastChild.innerHTML === player.symbol.innerHTML
         ) {
             console.log(`The winner is ${player.name}. They got 3 MIDDLE across on the ${turns} turn`);
             return true;
-
-
         }
         if (
+            arr[2][0].lastChild !== null &&
+            arr[2][1].lastChild !== null &&
+            arr[2][2].lastChild !== null &&
             arr[2][0].lastChild.innerHTML === player.symbol.innerHTML &&
             arr[2][1].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[2][2].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[2][0].lastChild.lastChild !== null &&
-            arr[2][1].lastChild.lastChild !== null &&
-            arr[2][2].lastChild.lastChild !== null
+            arr[2][2].lastChild.innerHTML === player.symbol.innerHTML
         ) {
             console.log(`The winner is ${player.name}. They got 3 BOTTOM across on the ${turns} turn`);
             return true;
@@ -169,24 +177,24 @@ const displayController = (() => {
 
         }
         if (
+            arr[0][0].lastChild !== null &&
+            arr[1][1].lastChild !== null &&
+            arr[2][2].lastChild !== null &&
             arr[0][0].lastChild.innerHTML === player.symbol.innerHTML &&
             arr[1][1].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[2][2].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[0][0].lastChild.lastChild !== null &&
-            arr[1][1].lastChild.lastChild !== null &&
-            arr[2][2].lastChild.lastChild !== null
+            arr[2][2].lastChild.innerHTML === player.symbol.innerHTML
         ) {
             console.log(`The winnder is ${player.name}. They got 3 DIAGONALLY on the ${turns} turn`)
             return true;
         }
 
         if (
+            arr[0][2].lastChild !== null &&
+            arr[2][0].lastChild !== null &&
+            arr[1][1].lastChild !== null &&
             arr[0][2].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[1][1].lastChild.innerHTML === player.symbol.innerHTML &&
             arr[2][0].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[2][0].lastChild.lastChild !== null &&
-            arr[0][2].lastChild.lastChild !== null &&
-            arr[1][1].lastChild.lastChild !== null
+            arr[1][1].lastChild.innerHTML === player.symbol.innerHTML
         ) {
             console.log(`The winnder is ${player.name}. They got 3 DIAGONALLY on the ${turns} turn`)
             return true;
@@ -194,34 +202,34 @@ const displayController = (() => {
 
 
         if (
+            arr[0][0].lastChild !== null &&
+            arr[1][0].lastChild !== null &&
+            arr[2][0].lastChild !== null &&
             arr[0][0].lastChild.innerHTML === player.symbol.innerHTML &&
             arr[1][0].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[2][0].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[0][0].lastChild.lastChild !== null &&
-            arr[1][0].lastChild.lastChild !== null &&
-            arr[2][0].lastChild.lastChild !== null
+            arr[2][0].lastChild.innerHTML === player.symbol.innerHTML
         ) {
             console.log(`The winnder is ${player.name}. They got 3 VERTICALLY on the ${turns} turn`)
             return true;
         }
         if (
+            arr[0][1].lastChild !== null &&
+            arr[1][1].lastChild !== null &&
+            arr[2][1].lastChild !== null &&
             arr[0][1].lastChild.innerHTML === player.symbol.innerHTML &&
             arr[1][1].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[2][1].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[0][1].lastChild.lastChild !== null &&
-            arr[1][1].lastChild.lastChild !== null &&
-            arr[2][1].lastChild.lastChild !== null
+            arr[2][1].lastChild.innerHTML === player.symbol.innerHTML
         ) {
             console.log(`The winnder is ${player.name}. They got 3 VERTICALLY on the ${turns} turn`)
             return true;
         }
         if (
+            arr[0][2].lastChild !== null &&
+            arr[1][2].lastChild !== null &&
+            arr[2][2].lastChild !== null &&
             arr[0][2].lastChild.innerHTML === player.symbol.innerHTML &&
             arr[1][2].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[2][2].lastChild.innerHTML === player.symbol.innerHTML &&
-            arr[0][2].lastChild.lastChild !== null &&
-            arr[1][2].lastChild.lastChild !== null &&
-            arr[2][2].lastChild.lastChild !== null
+            arr[2][2].lastChild.innerHTML === player.symbol.innerHTML
         ) {
             console.log(`The winnder is ${player.name}. They got 3 VERTICALLY on the ${turns} turn`)
             return true;
@@ -232,25 +240,25 @@ const displayController = (() => {
     twoDimArray.forEach(arr => arr.forEach(e => e.addEventListener('click', () => {
         numberOfTurns = document.querySelector('.turns-sp');
         if (numberOfTurns.textContent % 2 === 0 &&
-            e.lastChild !== getPlayerSymbol(p1) &&
-            e.lastChild !== getPlayerSymbol(p2)) {
+            e.lastChild !== getPlayerSymbol(playerOne) &&
+            e.lastChild !== getPlayerSymbol(playerTwo)) {
 
-            currentPlayer = p1;
-            clonedSymbol = p1.symbol.cloneNode(p1.symbol);
+            currentPlayer = playerOne;
+            clonedSymbol = playerOne.symbol.cloneNode(playerOne.symbol);
             clonedSymbol.id = Math.ceil(Math.random() * 100);
             e.appendChild(clonedSymbol);
             twoDimArray = gameBoard.refreshArray(twoDimArray, domArray);
             numberOfTurns.textContent++;
             if (numberOfTurns.textContent > 3) {
-                isThereAWinner = winCondition(p1, twoDimArray, numberOfTurns.textContent);
+                isThereAWinner = winCondition(playerOne, twoDimArray, numberOfTurns.textContent);
 
             }
         } else if (numberOfTurns.textContent % 2 === 1 &&
-            e.lastChild !== getPlayerSymbol(p1) &&
-            e.lastChild !== getPlayerSymbol(p2)) {
+            e.lastChild !== getPlayerSymbol(playerOne) &&
+            e.lastChild !== getPlayerSymbol(playerTwo)) {
 
-            currentPlayer = p2;
-            clonedSymbol = p2.symbol.cloneNode(p2.symbol);
+            currentPlayer = playerTwo;
+            clonedSymbol = playerTwo.symbol.cloneNode(playerTwo.symbol);
             clonedSymbol.id = Math.ceil(Math.random() * 100);
             e.appendChild(clonedSymbol);
 
@@ -258,7 +266,7 @@ const displayController = (() => {
             numberOfTurns.textContent++;
 
             if (numberOfTurns.textContent > 3) {
-                isThereAWinner = winCondition(p2, twoDimArray, numberOfTurns.textContent);
+                isThereAWinner = winCondition(playerTwo, twoDimArray, numberOfTurns.textContent);
 
             }
 
