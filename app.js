@@ -28,19 +28,19 @@ const gameBoard = (() => {
     }
 
 
-    const createParagraph = () => {
-        return document.createElement('p');
-    }
+    // const createParagraph = () => {
+    //     return document.createElement('p');
+    // }
 
-    for (let i = 0; i < cellsArray.length; i++) {
-        cellsArray[i].appendChild(createParagraph());
-    }
+    // for (let i = 0; i < cellsArray.length; i++) {
+    //     cellsArray[i].appendChild(createParagraph());
+    // }
 
     function clearBoard(nodeArray = document.getElementsByClassName('squares'), turns = document.querySelector('.turns-sp')) {
         turns.textContent = 0;
 
         for (let j = 0; j < nodeArray.length; j++) {
-            nodeArray[j].lastChild.textContent = '';
+            nodeArray[j].removeChild(nodeArray[j].lastChild);
         }
 
 
@@ -80,8 +80,8 @@ const gameBoard = (() => {
 const playerFactory = (name, symbol) => {
     name = name.value
     let arr = Array.from(symbol);
-    arr.forEach(element =>{
-        if(element.checked){
+    arr.forEach(element => {
+        if (element.checked) {
             console.log(element);
             symbol = element.nextElementSibling;
         }
@@ -93,6 +93,7 @@ const playerFactory = (name, symbol) => {
 const displayController = (() => {
     gameBoard.hideForm();
     gameBoard.showForm();
+    let clonedSymbol;
     const getP1Name = document.querySelector('#p1-name');
     const getP1Symbol = document.querySelector('.rating-form1')
     const getP2Name = document.querySelector('#p2-name');
@@ -121,65 +122,107 @@ const displayController = (() => {
         return player.symbol;
     }
 
-    function getLastChildTextContent(param) {
-        return param.lastChild.textContent;
-    }
-
 
     winCondition = (player, arr, turns) => {
+        console.log(arr);
+        console.log(player.symbol.innerHTML);
+        console.log(arr[0][0].lastChild.innerHTML);
+        console.log(arr[1][0].lastChild.innerHTML);
+        console.log(arr[2][0].lastChild.innerHTML);
 
-        if (arr[0][0].lastChild.textContent === player.symbol &&
-            arr[0][1].lastChild.textContent === player.symbol &&
-            arr[0][2].lastChild.textContent === player.symbol) {
+
+        if (
+            arr[0][0].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[0][1].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[0][2].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[0][2].lastChild.lastChild !== null &&
+            arr[0][0].lastChild.lastChild !== null &&
+            arr[0][1].lastChild.lastChild !== null
+        ) {
             console.log(`The winner is ${player.name}. They got 3 TOP across on the ${turns} turn`);
             return true;
         }
-        if (arr[1][0].lastChild.textContent === player.symbol &&
-            arr[1][1].lastChild.textContent === player.symbol &&
-            arr[1][2].lastChild.textContent === player.symbol) {
+        if (
+            arr[1][0].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[1][1].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[1][2].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[1][2].lastChild.lastChild !== null &&
+            arr[1][0].lastChild.lastChild !== null &&
+            arr[1][1].lastChild.lastChild !== null
+        ) {
             console.log(`The winner is ${player.name}. They got 3 MIDDLE across on the ${turns} turn`);
             return true;
 
 
         }
-        if (arr[2][0].lastChild.textContent === player.symbol &&
-            arr[2][1].lastChild.textContent === player.symbol &&
-            arr[2][2].lastChild.textContent === player.symbol) {
+        if (
+            arr[2][0].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[2][1].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[2][2].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[2][0].lastChild.lastChild !== null &&
+            arr[2][1].lastChild.lastChild !== null &&
+            arr[2][2].lastChild.lastChild !== null
+        ) {
             console.log(`The winner is ${player.name}. They got 3 BOTTOM across on the ${turns} turn`);
             return true;
 
 
         }
-        if (arr[0][0].lastChild.textContent === player.symbol &&
-            arr[1][1].lastChild.textContent === player.symbol &&
-            arr[2][2].lastChild.textContent === player.symbol) {
+        if (
+            arr[0][0].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[1][1].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[2][2].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[0][0].lastChild.lastChild !== null &&
+            arr[1][1].lastChild.lastChild !== null &&
+            arr[2][2].lastChild.lastChild !== null
+        ) {
             console.log(`The winnder is ${player.name}. They got 3 DIAGONALLY on the ${turns} turn`)
             return true;
         }
 
-        if (arr[0][2].lastChild.textContent === player.symbol &&
-            arr[1][1].lastChild.textContent === player.symbol &&
-            arr[2][0].lastChild.textContent === player.symbol) {
+        if (
+            arr[0][2].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[1][1].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[2][0].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[2][0].lastChild.lastChild !== null &&
+            arr[0][2].lastChild.lastChild !== null &&
+            arr[1][1].lastChild.lastChild !== null
+        ) {
             console.log(`The winnder is ${player.name}. They got 3 DIAGONALLY on the ${turns} turn`)
             return true;
         }
 
 
-        if (arr[0][0].lastChild.textContent === player.symbol &&
-            arr[1][0].lastChild.textContent === player.symbol &&
-            arr[2][0].lastChild.textContent === player.symbol) {
+        if (
+            arr[0][0].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[1][0].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[2][0].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[0][0].lastChild.lastChild !== null &&
+            arr[1][0].lastChild.lastChild !== null &&
+            arr[2][0].lastChild.lastChild !== null
+        ) {
             console.log(`The winnder is ${player.name}. They got 3 VERTICALLY on the ${turns} turn`)
             return true;
         }
-        if (arr[0][1].lastChild.textContent === player.symbol &&
-            arr[1][1].lastChild.textContent === player.symbol &&
-            arr[2][1].lastChild.textContent === player.symbol) {
+        if (
+            arr[0][1].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[1][1].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[2][1].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[0][1].lastChild.lastChild !== null &&
+            arr[1][1].lastChild.lastChild !== null &&
+            arr[2][1].lastChild.lastChild !== null
+        ) {
             console.log(`The winnder is ${player.name}. They got 3 VERTICALLY on the ${turns} turn`)
             return true;
         }
-        if (arr[0][2].lastChild.textContent === player.symbol &&
-            arr[1][2].lastChild.textContent === player.symbol &&
-            arr[2][2].lastChild.textContent === player.symbol) {
+        if (
+            arr[0][2].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[1][2].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[2][2].lastChild.innerHTML === player.symbol.innerHTML &&
+            arr[0][2].lastChild.lastChild !== null &&
+            arr[1][2].lastChild.lastChild !== null &&
+            arr[2][2].lastChild.lastChild !== null
+        ) {
             console.log(`The winnder is ${player.name}. They got 3 VERTICALLY on the ${turns} turn`)
             return true;
         }
@@ -188,29 +231,34 @@ const displayController = (() => {
 
     twoDimArray.forEach(arr => arr.forEach(e => e.addEventListener('click', () => {
         numberOfTurns = document.querySelector('.turns-sp');
-        console.log(numberOfTurns);
         if (numberOfTurns.textContent % 2 === 0 &&
-            e.lastChild.textContent !== getPlayerSymbol(p1) &&
-            e.lastChild.textContent !== getPlayerSymbol(p2)) {
+            e.lastChild !== getPlayerSymbol(p1) &&
+            e.lastChild !== getPlayerSymbol(p2)) {
 
             currentPlayer = p1;
-            e.lastChild.appendChild(getPlayerSymbol(p1));
-            twoDimArray = gameBoard.refreshArray(twoDimArray, domArray);
-            numberOfTurns.textContent++;
-            if (numberOfTurns.textContent > 3) {
-                isThereAWinner = winCondition(p1, twoDimArray, numberOfTurns);
-
-            }
-        } else if (numberOfTurns.textContent % 2 === 1 &&
-            e.lastChild.textContent !== getPlayerSymbol(p1) &&
-            e.lastChild.textContent !== getPlayerSymbol(p2)) {
-
-            currentPlayer = p2;
-            e.lastChild.textContent = getPlayerSymbol(p2);
+            clonedSymbol = p1.symbol.cloneNode(p1.symbol);
+            clonedSymbol.id = Math.ceil(Math.random() * 100);
+            e.appendChild(clonedSymbol);
             twoDimArray = gameBoard.refreshArray(twoDimArray, domArray);
             numberOfTurns.textContent++;
             if (numberOfTurns.textContent > 3) {
                 isThereAWinner = winCondition(p1, twoDimArray, numberOfTurns.textContent);
+
+            }
+        } else if (numberOfTurns.textContent % 2 === 1 &&
+            e.lastChild !== getPlayerSymbol(p1) &&
+            e.lastChild !== getPlayerSymbol(p2)) {
+
+            currentPlayer = p2;
+            clonedSymbol = p2.symbol.cloneNode(p2.symbol);
+            clonedSymbol.id = Math.ceil(Math.random() * 100);
+            e.appendChild(clonedSymbol);
+
+            twoDimArray = gameBoard.refreshArray(twoDimArray, domArray);
+            numberOfTurns.textContent++;
+
+            if (numberOfTurns.textContent > 3) {
+                isThereAWinner = winCondition(p2, twoDimArray, numberOfTurns.textContent);
 
             }
 
