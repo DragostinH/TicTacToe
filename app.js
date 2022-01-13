@@ -99,18 +99,20 @@ const displayController = (() => {
     const getP1Symbol = document.querySelector('.rating-form1')
     const getP2Name = document.querySelector('#p2-name');
     const getP2Symbol = document.querySelector('.rating-form2')
-    let arrOne = Array.from(getP1Symbol)
+    let arrOne = Array.from(getP1Symbol);
+    playerOne = playerFactory(getP1Name, arrOne);
     arrOne.forEach(e => e.addEventListener('change', () => {
-        console.log(arrOne)
+        playerOne.symbol = e.nextElementSibling
+        console.log('This is checked');
+        console.log(e.nextElementSibling);
     }))
     let arrTwo = Array.from(getP2Symbol)
+    playerTwo = playerFactory(getP2Name, arrTwo);
     arrTwo.forEach(e => e.addEventListener('change', () => {
-        console.log(arrTwo)
+        playerTwo.symbol = e.nextElementSibling
 
     }))
 
-     playerOne = playerFactory(getP1Name, arrOne);
-     playerTwo = playerFactory(getP2Name, arrTwo);
 
     gameBoard.hideForm();
     gameBoard.showForm();
@@ -132,7 +134,7 @@ const displayController = (() => {
     let currentPlayer;
 
     function getPlayerSymbol(player) {
-        return player.symbol.nextElementSibling;
+        return player.symbol;
     }
 
 
@@ -240,11 +242,12 @@ const displayController = (() => {
     twoDimArray.forEach(arr => arr.forEach(e => e.addEventListener('click', () => {
         numberOfTurns = document.querySelector('.turns-sp');
         if (numberOfTurns.textContent % 2 === 0 &&
-            e.lastChild !== getPlayerSymbol(playerOne) &&
-            e.lastChild !== getPlayerSymbol(playerTwo)) {
+            e.lastChild === null) {
+
 
             currentPlayer = playerOne;
             clonedSymbol = playerOne.symbol.cloneNode(playerOne.symbol);
+            console.log(clonedSymbol);
             clonedSymbol.id = Math.ceil(Math.random() * 100);
             e.appendChild(clonedSymbol);
             twoDimArray = gameBoard.refreshArray(twoDimArray, domArray);
@@ -254,8 +257,7 @@ const displayController = (() => {
 
             }
         } else if (numberOfTurns.textContent % 2 === 1 &&
-            e.lastChild !== getPlayerSymbol(playerOne) &&
-            e.lastChild !== getPlayerSymbol(playerTwo)) {
+            e.lastChild === null) {
 
             currentPlayer = playerTwo;
             clonedSymbol = playerTwo.symbol.cloneNode(playerTwo.symbol);

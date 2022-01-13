@@ -29,7 +29,7 @@
                     <p class="title">Player One</p>
                     <p class="player-name">Name:</p>
                     <label for="p1">
-                        <input type="text" name="p1-name" id="p1-name" placeholder="1337Master">
+                        <input type="text" name="p1-name" id="p1-name" placeholder="1337Master" required>
                     </label>
                     <div class="card">
                         <div class="rating-container">
@@ -90,7 +90,7 @@
                     <p class="title">Player Two</p>
                     <p class="player-name">Name:</p>
                     <label for="p2">
-                        <input type="text" name="p2-name" id="p2-name" placeholder="1337Master">
+                        <input type="text" name="p2-name" id="p2-name" placeholder="1337Master" required>
                     </label>
                     <div class="card">
                         <div class="rating-container">
@@ -163,13 +163,13 @@
 
     </form>
 
+    
+    <div class="clear-button-div">
+        <button class="clear-button">CLEAR BOARD</button>
+    </div>
+    <p class="turns-p">TURN: <span class="turns-sp">0</span></p>
+    
     <div class="board-container">
-
-        <div class="clear-button-div">
-            <button class="clear-button">CLEAR BOARD</button>
-        </div>
-        <p class="turns-p">TURN: <span class="turns-sp">0</span></p>
-
         <div class="game-board">
             <div class="squares"></div>
             <div class="squares"></div>

@@ -29,8 +29,8 @@ font-size: 5em;
 }
 
 .board-container {
-    border: 1px solid white;
 
+	border: 0.1em solid var(--red);
 }
 
 .game-board {
@@ -44,7 +44,7 @@ font-size: 5em;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid red;
+    border: 0.1em solid var(--red);
     width: 200px;
     height: 200px;
     font-size: 60px;
