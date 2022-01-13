@@ -80,12 +80,10 @@ const playerFactory = (name, nodeList) => {
     let symbol;
     // let arr = Array.from(nodeList);
     for (let i = 0; i < nodeList.length; i++) {
-
         const element = nodeList[i];
-
         if (element.checked) {
             console.log(element.checked);
-            symbol = element;
+            symbol = element.nextElementSibling;
         }
     }
 
@@ -93,25 +91,32 @@ const playerFactory = (name, nodeList) => {
 }
 
 const displayController = (() => {
-    let playerOne;
-    let playerTwo;
+    // let playerOne;
+    // let playerTwo;
     const getP1Name = document.querySelector('#p1-name');
     const getP1Symbol = document.querySelector('.rating-form1')
     const getP2Name = document.querySelector('#p2-name');
     const getP2Symbol = document.querySelector('.rating-form2')
     let arrOne = Array.from(getP1Symbol);
-    playerOne = playerFactory(getP1Name, arrOne);
+    let arrTwo = Array.from(getP2Symbol)
+    let playerOne = playerFactory(getP1Name, arrOne);
+    let playerTwo = playerFactory(getP2Name, arrTwo);
+
     arrOne.forEach(e => e.addEventListener('change', () => {
         playerOne.symbol = e.nextElementSibling
-        console.log('This is checked');
-        console.log(e.nextElementSibling);
+
     }))
-    let arrTwo = Array.from(getP2Symbol)
-    playerTwo = playerFactory(getP2Name, arrTwo);
     arrTwo.forEach(e => e.addEventListener('change', () => {
         playerTwo.symbol = e.nextElementSibling
 
     }))
+
+    getP1Name.addEventListener('keyup', ()=>{
+        playerOne.name = document.querySelector('#p1-name').value;
+    })
+    getP2Name.addEventListener('keyup', ()=>{
+        playerTwo.name = document.querySelector('#p2-name').value;
+    })
 
 
     gameBoard.hideForm();
